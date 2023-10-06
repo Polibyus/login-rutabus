@@ -5,7 +5,6 @@ import "./styles/Dashboard.css";
 import { auth, db, logout } from "./config/firebase";
 import { query, collection, getDocs, where } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-
 const storage = getStorage();
 
 function Dashboard() {
@@ -35,27 +34,25 @@ function Dashboard() {
   }, [user, loading]);
 
   const bajar = async () => {
-    await getDownloadURL(
-      ref(
-        storage,
-        `gs://login-rutabus.appspot.com/Recibos/350-SUE-M-2307-STT-03-ADMINISTRACION-00000${leg}-20231006-125445-USR18.pdf`
-      )
-    )
-      .then((url) => {
-        const xhr = new XMLHttpRequest();
-        xhr.responseType = "blob";
-        xhr.onload = (event) => {// eslint-disable-next-line
-          const blob = xhr.response;
-        };
-        xhr.open("GET", url);
-        xhr.send();
-      })
-      .catch((error) => {
-        
-        alert(`Error al descargar: ${error}`);
-      });
-  }
-  
+    try {
+      getDownloadURL(ref(storage, `gs://login-rutabus.appspot.com/Recibos/350-SUE-M-2307-STT-03-ADMINISTRACION-00000501-20231006-125445-USR18.pdf`))
+        .then((url) => {
+          const xhr = new XMLHttpRequest();
+          xhr.responseType = "blob";
+          xhr.onload = (event) => {
+            // eslint-disable-next-line
+            const blob = xhr.response;
+          };
+          xhr.open("GET", url);
+          xhr.send();
+        })
+        .catch((error) => {
+          alert(`error:${error}`);
+        });
+    } catch (err) {
+      alert(`error:${err}`);
+    }
+  };
   return (
     <div className="dashboard">
       <div className="dashboard__container">
